@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model albums {
+  album_id     Int       @id @default(autoincrement())
+  artist_id    Int?
+  name         String    @db.VarChar(100)
+  release_date DateTime? @db.Date
+  image        Bytes?
+  artists      artists?  @relation(fields: [artist_id], references: [artist_id], onDelete: NoAction, onUpdate: NoAction)
+  tracks       tracks[]
+}
+
+model artists {
+  artist_id Int         @id @default(autoincrement())
+  name      String      @db.VarChar(100)
+  genre     String?     @db.VarChar(100)
+  image     Bytes?
+  albums    albums[]
+  followers followers[]
+}
+
+model followers {
+  user_id   Int
+  artist_id Int
+  artists   artists @relation(fields: [artist_id], references: [artist_id], onDelete: NoAction, onUpdate: NoAction)
+  users     users   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([user_id, artist_id])
+}
+
+model likes {
+  user_id        Int
+  track_id       Int
+  like_date_time DateTime? @db.Timestamp(6)
+  tracks         tracks    @relation(fields: [track_id], references: [track_id], onDelete: NoAction, onUpdate: NoAction)
+  users          users     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([user_id, track_id])
+}
+
+model playlist_tracks {
+  playlist_id Int
+  track_id    Int
+  Order       Int?
+  playlists   playlists @relation(fields: [playlist_id], references: [playlist_id], onDelete: NoAction, onUpdate: NoAction)
+  tracks      tracks    @relation(fields: [track_id], references: [track_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([playlist_id, track_id])
+}
+
+model playlists {
+  playlist_id     Int               @id @default(autoincrement())
+  user_id         Int?
+  name            String            @db.VarChar(100)
+  image           Bytes?
+  playlist_tracks playlist_tracks[]
+  users           users?            @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tracks {
+  track_id        Int               @id @default(autoincrement())
+  album_id        Int?
+  name            String            @db.VarChar(100)
+  duration        Int
+  path            String?           @db.VarChar(255)
+  likes           likes[]
+  playlist_tracks playlist_tracks[]
+  albums          albums?           @relation(fields: [album_id], references: [album_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  user_id       Int         @id @default(autoincrement())
+  name          String      @db.VarChar(100)
+  email         String      @unique @db.VarChar(100)
+  password      String      @db.VarChar(100)
+  date_of_birth DateTime?   @db.Date
+  profile_image Bytes?
+  followers     followers[]
+  likes         likes[]
+  playlists     playlists[]
+}

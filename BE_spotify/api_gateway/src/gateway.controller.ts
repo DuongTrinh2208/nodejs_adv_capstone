@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Post, UseGuards, Headers } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post, UseGuards, Headers, Query } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
@@ -6,7 +6,8 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 @Controller('api')
 export class GatewayController {
   constructor(
-    @Inject("USERS") private readonly userService: ClientProxy
+    @Inject("USERS") private readonly userService: ClientProxy,
+    @Inject("MUSIC_CATALOGS") private readonly musicCatalogsService: ClientProxy
   ) { }
 
   @Post('user-login')
@@ -36,6 +37,31 @@ export class GatewayController {
       input_current_password: currentPassword,
       new_password: newPassword
     }));
+    return data;
+  }
+
+  @Post('add-artist')
+  async addArtist(
+    @Body('name') name: string,
+    @Body('genre') genre: string
+  ) {
+    let data = await lastValueFrom(this.musicCatalogsService.send("ADD_ARTISTS", {
+      name,
+      genre,
+      image: null
+    }));
+
+    return data;
+  }
+
+  @Get('search-artists')
+  async searchArtists(
+    @Query('name') name: string
+  ) {
+    let data = await lastValueFrom(this.musicCatalogsService.send("SEARCH_ARTISTS", {
+      name
+    }));
+
     return data;
   }
 }

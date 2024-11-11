@@ -19,10 +19,20 @@ import { ConfigModule } from '@nestjs/config';
         }
       }
     }]),
-
+    ClientsModule.register([{
+      name: "MUSIC_CATALOGS",
+      transport: Transport.RMQ,
+      options: {
+        urls: ['amqp://admin:1234@localhost:5672'],
+        queue: 'music_catalog_queue',
+        queueOptions: {
+          durable: false
+        }
+      }
+    }]),  
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: {expiresIn: '1h'},
+      signOptions: { expiresIn: '1h' },
       global: true
     }),
 
@@ -33,4 +43,4 @@ import { ConfigModule } from '@nestjs/config';
   controllers: [GatewayController],
   providers: [JwtStrategy],
 })
-export class AppModule {}
+export class AppModule { }

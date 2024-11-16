@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { ArtistModule } from './artist/artist.module';
+import { TrackModule } from './track/track.module';
+import { AlbumModule } from './album/album.module';
 
 @Module({
   imports: [
@@ -9,7 +11,9 @@ import { ArtistModule } from './artist/artist.module';
       isGlobal: true
     }),
     PrismaModule,
-    ArtistModule
+    ArtistModule,
+    TrackModule,
+    AlbumModule
   ],
   controllers: [],
   providers: [],

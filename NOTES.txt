@@ -1,0 +1,14 @@
+Services 
+
+User Service: Handles user authentication, profiles, and subscriptions.
+
+(Read-heavy)
+(use Elstalic Search, Redis to boost performance)
+Music Catalog Service: Manages information about artists, albums, and tracks.
+
+(Write-heavy)
+Playlist Service: Oversees the creation and management of playlists.
+
+Recommendation Service: Provides personalized music recommendations based on user behavior and preferences.
+
+Streaming Service: Manages the delivery of audio content to users.

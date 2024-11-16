@@ -64,4 +64,53 @@ export class GatewayController {
 
     return data;
   }
+
+  @Get('find-tracks-by-name')
+  async findTracksByName(
+    @Query('name') name: string
+  ){
+    let data = await lastValueFrom(this.musicCatalogsService.send("FIND_TRACKS_BY_NAME", {
+      name
+    }));
+
+    return data;
+  }
+
+  @Get('find-tracks-in-album')
+  async findTracksInAlbum(
+    @Query('album_id') album_id: Number
+  ){
+    let data = await lastValueFrom(this.musicCatalogsService.send("FIND_TRACKS_IN_ALBUM", {
+      album_id
+    }));
+
+    return data;
+  }
+
+  @Get('find-tracks-by-artist')
+  async findTracksByArtist(
+    @Query('artist_id') artist_id: Number
+  ){
+    let data = await lastValueFrom(this.musicCatalogsService.send("FIND_TRACKS_BY_ARTIST", {
+      artist_id
+    }));
+
+    return data;
+  }
+
+  @Post('add-tracks')
+  async addTrack(
+    @Body('album_id') album_id: Number,
+    @Body('artist_id') artist_id: Number,
+    @Body('tracks') tracks: Array<any>
+  ){
+    let data = await lastValueFrom(this.musicCatalogsService.send("ADD_TRACKS", {
+      album_id,
+      artist_id,
+      tracks
+    }));
+
+    return data;
+  }
+
 }

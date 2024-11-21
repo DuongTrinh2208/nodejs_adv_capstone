@@ -29,7 +29,18 @@ import { ConfigModule } from '@nestjs/config';
           durable: false
         }
       }
-    }]),  
+    }]),
+    ClientsModule.register([{
+      name: "PLAY_LIST",
+      transport: Transport.RMQ,
+      options: {
+        urls: ['amqp://admin:1234@localhost:5672'],
+        queue: 'play_list_queue',
+        queueOptions: {
+          durable: false
+        }
+      }
+    }]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1h' },

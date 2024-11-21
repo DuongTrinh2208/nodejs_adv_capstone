@@ -7,7 +7,8 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 export class GatewayController {
   constructor(
     @Inject("USERS") private readonly userService: ClientProxy,
-    @Inject("MUSIC_CATALOGS") private readonly musicCatalogsService: ClientProxy
+    @Inject("MUSIC_CATALOGS") private readonly musicCatalogsService: ClientProxy,
+    @Inject("PLAY_LIST") private readonly playlistService: ClientProxy
   ) { }
 
   @Post('user-login')
@@ -68,7 +69,7 @@ export class GatewayController {
   @Get('find-tracks-by-name')
   async findTracksByName(
     @Query('name') name: string
-  ){
+  ) {
     let data = await lastValueFrom(this.musicCatalogsService.send("FIND_TRACKS_BY_NAME", {
       name
     }));
@@ -79,7 +80,7 @@ export class GatewayController {
   @Get('find-tracks-in-album')
   async findTracksInAlbum(
     @Query('album_id') album_id: Number
-  ){
+  ) {
     let data = await lastValueFrom(this.musicCatalogsService.send("FIND_TRACKS_IN_ALBUM", {
       album_id
     }));
@@ -90,7 +91,7 @@ export class GatewayController {
   @Get('find-tracks-by-artist')
   async findTracksByArtist(
     @Query('artist_id') artist_id: Number
-  ){
+  ) {
     let data = await lastValueFrom(this.musicCatalogsService.send("FIND_TRACKS_BY_ARTIST", {
       artist_id
     }));
@@ -103,7 +104,7 @@ export class GatewayController {
     @Body('album_id') album_id: Number,
     @Body('artist_id') artist_id: Number,
     @Body('tracks') tracks: Array<any>
-  ){
+  ) {
     let data = await lastValueFrom(this.musicCatalogsService.send("ADD_TRACKS", {
       album_id,
       artist_id,
@@ -113,4 +114,71 @@ export class GatewayController {
     return data;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get("get-user-playlist")
+  async getUserPlaylists(
+    @Headers() headers: any
+  ) {
+    const token = headers.authorization;
+    let data = await lastValueFrom(this.playlistService.send("FIND_USER_PLAYLISTS", {
+      token
+    }));
+    return data;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("create-playlist")
+  async createPlaylist(
+    @Headers() headers: any,
+    @Body('name') name: string
+  ) {
+    const token = headers.authorization;
+    let data = await lastValueFrom(this.playlistService.send("CREATE_PLAYLIST", {
+      token,
+      name
+    }));
+    return data;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("add-tracks-to-playlist")
+  async addTracksToPlaylist(
+    @Headers() headers: any,
+    @Body('playlist_id') playlist_id: Number,
+    @Body('trackIds') trackIds: Array<any>
+  ) {
+    const token = headers.authorization;
+    let data = await lastValueFrom(this.playlistService.send("ADD_TRACKS_TO_PLAYLIST", {
+      token,
+      playlist_id,
+      trackIds
+    }));
+    return data;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("remove-tracks-from-playlist")
+  async removeTracksFromPlaylist(
+    @Headers() headers: any,
+    @Body('playlist_id') playlist_id: Number,
+    @Body('trackIds') trackIds: Array<any>
+  ) {
+    const token = headers.authorization;
+    let data = await lastValueFrom(this.playlistService.send("REMOVE_TRACKS_FROM_PLAYLIST", {
+      token,
+      playlist_id,
+      trackIds
+    }));
+    return data;
+  }
+
+  @Get("get-tracks-from-playlist")
+  async getTracksInPlaylist(
+    @Query('playlist_id') playlist_id: Number
+  ) {
+    let data = await lastValueFrom(this.playlistService.send("GET_TRACKS_IN_PLAYLIST", {
+      playlist_id,
+    }));
+    return data;
+  }
 }

@@ -1,33 +1,24 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { AlbumService } from './album.service';
 
 @Controller()
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService) {}
+  constructor(private readonly albumService: AlbumService) { }
 
-  // @MessagePattern('createAlbum')
-  // create(@Payload() data) {
-  //   return this.albumService.create();
-  // }
+  @EventPattern("CREATE_ALBUM")
+  async create(
+    @Payload() data
+  ) {
+    const { artist_id, name, release_date } = data;
+    await this.albumService.create(artist_id, name, release_date);
+  }
 
-  // @MessagePattern('findAllAlbum')
-  // findAll() {
-  //   return this.albumService.findAll();
-  // }
-
-  // @MessagePattern('findOneAlbum')
-  // findOne(@Payload() id: number) {
-  //   return this.albumService.findOne(id);
-  // }
-
-  // @MessagePattern('updateAlbum')
-  // update(@Payload() updateAlbumDto: UpdateAlbumDto) {
-  //   return this.albumService.update(updateAlbumDto.id, updateAlbumDto);
-  // }
-
-  // @MessagePattern('removeAlbum')
-  // remove(@Payload() id: number) {
-  //   return this.albumService.remove(id);
-  // }
+  @EventPattern("FIND_ARTIST_ALBUM")
+  async findArtistAlbum(
+    @Payload() data
+  ){
+    const {artist_id} = data;
+    return await this.albumService.findArtistAlbum(artist_id);
+  }
 }

@@ -16,4 +16,9 @@ export class ArtistController {
   async searchArtists(@Payload() data){
     return await this.artistService.findArtist(data.name);
   }
+
+  @EventPattern("FIND_GENRE_ARTISTS")
+  async findArtistsByGenre(@Payload() data){
+    return await this.artistService.findArtistsByGenre(data.name);
+  }
 }

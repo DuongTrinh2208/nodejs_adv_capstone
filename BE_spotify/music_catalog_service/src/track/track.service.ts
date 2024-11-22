@@ -1,16 +1,20 @@
-import { Injectable, HttpException, HttpStatus, } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class TrackService {
-    constructor() { }
+    constructor(
+        @Inject(CACHE_MANAGER) private cacheManager: Cache
+    ) { }
 
     private prismaService = new PrismaClient();
 
     async addTracks(album_id, tracks, artist_id) {
         album_id = Number(album_id);
         artist_id = Number(artist_id);
-        if(tracks.count <= 0){
+        if (tracks.count <= 0) {
             return false;
         }
         // Check if the album exists
@@ -20,7 +24,7 @@ export class TrackService {
                 artist_id
             }
         });
-    
+
         // Create a new album if it doesn't exist
         if (!findAlbum) {
             findAlbum = await this.prismaService.albums.create({
@@ -30,10 +34,10 @@ export class TrackService {
                     release_date: new Date()
                 }
             });
-    
+
             album_id = findAlbum.album_id;
         }
-    
+
         // Prepare data for batch insertion
         const tracksData = tracks.map(track => ({
             album_id,
@@ -41,16 +45,16 @@ export class TrackService {
             duration: track.duration,
             path: track.path
         }));
-    
+
         // Use createMany to insert multiple tracks at once
         const createdTracks = await this.prismaService.tracks.createMany({
             data: tracksData,
             skipDuplicates: true
         });
-    
+
         return createdTracks.count > 0;
     }
-    
+
 
     async findTrack(name) {
         const findTracks = await this.prismaService.tracks.findMany({
@@ -87,6 +91,14 @@ export class TrackService {
 
     async findTracksByArtistID(artist_id) {
         // use redis to store artist top tracks
+        const key = `${artist_id}_top_tracks`;
+
+        let cachedData = await this.cacheManager.get(key);
+
+        if(cachedData){
+            return cachedData;
+        }
+
         artist_id = Number(artist_id);
         const albumsWithTracks = await this.prismaService.albums.findMany({
             where: {
@@ -96,10 +108,11 @@ export class TrackService {
                 tracks: true
             }
         });
-    
+
         const tracks = albumsWithTracks.flatMap(album => album.tracks);
-    
+
+        this.cacheManager.set(key, tracks)
         return tracks;
     }
-    
+
 }

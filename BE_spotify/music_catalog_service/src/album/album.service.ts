@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import {Cache} from 'cache-manager';
 
 @Injectable()
 export class AlbumService {
-  constructor(){}
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
+  ){}
   private prismaService = new PrismaClient();
 
   async create(artist_id, name, release_date) {
@@ -19,18 +23,20 @@ export class AlbumService {
 
   async findArtistAlbum(artist_id) {
     // use Redis cache
-    return await this.prismaService.albums.findMany({
+    const artistAlbumKey = `${artist_id}_albums`;
+    let cachedData = await this.cacheManager.get(artistAlbumKey);
+
+    if(cachedData) {
+      return cachedData;
+    }
+
+    let data = await this.prismaService.albums.findMany({
       where: {
         artist_id
       }
     });
-  }
 
-  update() {
-    return `This action updates a album`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} album`;
+    this.cacheManager.set(artistAlbumKey, data);
+    return data;
   }
 }

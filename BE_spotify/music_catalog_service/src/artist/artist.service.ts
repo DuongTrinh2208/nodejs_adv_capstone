@@ -1,9 +1,13 @@
-import { Injectable, HttpException, HttpStatus, } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Inject} from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class ArtistService {
-    constructor(){}
+    constructor(
+        @Inject(CACHE_MANAGER) private cacheManager: Cache
+    ){}
 
     private prismaService = new PrismaClient();
 
@@ -40,5 +44,28 @@ export class ArtistService {
         });
 
         return findArtists;
+    }
+
+    async findArtistsByGenre(genre){
+        const key = `${genre}_artists`;
+
+        let cachedData = await this.cacheManager.get(key);
+
+        if(cachedData){
+            return cachedData;
+        }
+
+        let data = await this.prismaService.artists.findMany({
+            where: {
+                genre
+            }
+        });
+
+        if(data){
+            this.cacheManager.set(key, data);
+            return data;
+        }
+
+        return null;
     }
 }

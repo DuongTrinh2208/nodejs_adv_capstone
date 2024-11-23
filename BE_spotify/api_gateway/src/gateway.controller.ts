@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Inject, Post, UseGuards, Headers, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post, UseGuards, Headers, Query, BadRequestException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { last, lastValueFrom } from 'rxjs';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Controller('api')
@@ -61,6 +61,17 @@ export class GatewayController {
   ) {
     let data = await lastValueFrom(this.musicCatalogsService.send("SEARCH_ARTISTS", {
       name
+    }));
+
+    return data;
+  }
+
+  @Get('genre-artists')
+  async findArtistsByGenre(
+    @Query('genre') genre: string
+  ) {
+    let data = await lastValueFrom(this.musicCatalogsService.send("FIND_GENRE_ARTISTS", {
+      genre
     }));
 
     return data;
@@ -180,5 +191,61 @@ export class GatewayController {
       playlist_id,
     }));
     return data;
+  }
+
+  @Post("create-album")
+  async createAlbum(
+    @Body('artist_id') artist_id: Number,
+    @Body('name') name: string,
+    @Body('release_date') release_date: string
+  ) {
+    const validDate = this.validateAndParseDate(release_date);
+    if (!validDate.isValid) {
+      throw new BadRequestException('Invalid release data format! please follow YYYY-MM-DD');
+    }
+
+    let data = await lastValueFrom(this.musicCatalogsService.send("CREATE_ALBUM", {
+      artist_id,
+      name,
+      release_date
+    }));
+
+    return data;
+  }
+
+  @Get("find-artist-album")
+  async findArtistAlbum(
+    @Query('artist_id') artist_id: Number
+  ) {
+    let data = await lastValueFrom(this.musicCatalogsService.send("FIND_ARTIST_ALBUM", {
+      artist_id
+    }));
+
+    return data;
+  }
+
+  validateAndParseDate(input) {
+    // Regular expression to match the format YYYY-MM-DD
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+
+    // Check if the input matches the format
+    if (!regex.test(input)) {
+      return { isValid: false, message: "Invalid format. Use YYYY-MM-DD." };
+    }
+
+    // Parse the date to ensure it's a valid calendar date
+    const date = new Date(input);
+
+    // Validate that the parsed date matches the input string
+    const [year, month, day] = input.split("-");
+    if (
+      date.getFullYear() !== parseInt(year, 10) ||
+      date.getMonth() + 1 !== parseInt(month, 10) || // Months are 0-indexed
+      date.getDate() !== parseInt(day, 10)
+    ) {
+      return { isValid: false, message: "Invalid date." };
+    }
+
+    return { isValid: true, date };
   }
 }

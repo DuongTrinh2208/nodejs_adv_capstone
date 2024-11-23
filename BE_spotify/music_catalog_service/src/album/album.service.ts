@@ -18,6 +18,11 @@ export class AlbumService {
         release_date
       }
     });
+
+    if(data){
+      const artistAlbumKey = `${artist_id}_albums`;
+      this.cacheManager.del(artistAlbumKey);
+    }    
     return data;
   }
 

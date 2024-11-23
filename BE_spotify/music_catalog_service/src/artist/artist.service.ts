@@ -30,6 +30,10 @@ export class ArtistService {
             }
         });
 
+        if(artist){
+            const key = `${genre}_artists`;
+            await this.cacheManager.del(key);
+        }
         return artist != null;
     }
 
@@ -48,7 +52,6 @@ export class ArtistService {
 
     async findArtistsByGenre(genre){
         const key = `${genre}_artists`;
-
         let cachedData = await this.cacheManager.get(key);
 
         if(cachedData){

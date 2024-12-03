@@ -41,6 +41,17 @@ import { ConfigModule } from '@nestjs/config';
         }
       }
     }]),
+    ClientsModule.register([{
+      name: "SOCIAL",
+      transport: Transport.RMQ,
+      options: {
+        urls: ['amqp://admin:1234@localhost:5672'],
+        queue: 'social_queue',
+        queueOptions: {
+          durable: false
+        }
+      }
+    }]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1h' },

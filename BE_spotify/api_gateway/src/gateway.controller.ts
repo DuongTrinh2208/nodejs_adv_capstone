@@ -8,7 +8,8 @@ export class GatewayController {
   constructor(
     @Inject("USERS") private readonly userService: ClientProxy,
     @Inject("MUSIC_CATALOGS") private readonly musicCatalogsService: ClientProxy,
-    @Inject("PLAY_LIST") private readonly playlistService: ClientProxy
+    @Inject("PLAY_LIST") private readonly playlistService: ClientProxy,
+    @Inject("SOCIAL") private readonly socialService: ClientProxy
   ) { }
 
   @Post('user-login')
@@ -221,6 +222,84 @@ export class GatewayController {
       artist_id
     }));
 
+    return data;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("follow-artist")
+  async followArtist(
+    @Headers() headers: any,
+    @Body('artist_id') artist_id: Number
+  ) {
+    const token = headers.authorization;
+    let data = await lastValueFrom(this.socialService.send("USER_FOLLOW_ARTIST", {
+      token,
+      artist_id
+    }));
+    return data;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("unfollow-artist")
+  async unfollowArtist(
+    @Headers() headers: any,
+    @Body('artist_id') artist_id: Number
+  ) {
+    const token = headers.authorization;
+    let data = await lastValueFrom(this.socialService.send("USER_UNFOLLOW_ARTIST", {
+      token,
+      artist_id
+    }));
+    return data;
+  }
+
+  @Get("artist-follower")
+  async getArtistFollwer(
+    @Query('artist_id') artist_id: Number
+  ){
+    let data = await lastValueFrom(this.socialService.send("GET_ARTISTS_FOLLOWER_COUNT", {
+      artist_id
+    }));
+    return data;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("like-track")
+  async likeTrack(
+    @Headers() headers: any,
+    @Body('track_id') track_id: Number
+  ) {
+    const token = headers.authorization;
+    let data = await lastValueFrom(this.socialService.send("USER_LIKE_TRACK", {
+      token,
+      track_id
+    }));
+    return data;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("unlike-track")
+  async unLikeTrack(
+    @Headers() headers: any,
+    @Body('track_id') track_id: Number
+  ) {
+    const token = headers.authorization;
+    let data = await lastValueFrom(this.socialService.send("USER_UNLIKE_TRACK", {
+      token,
+      track_id
+    }));
+    return data;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get("liked-tracks")
+  async likedTracks(
+    @Headers() headers: any,
+  ) {
+    const token = headers.authorization;
+    let data = await lastValueFrom(this.socialService.send("GET_USER_LIKED_TRACKS", {
+      token
+    }));
     return data;
   }
 

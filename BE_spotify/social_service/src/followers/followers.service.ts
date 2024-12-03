@@ -14,6 +14,8 @@ export class FollowersService {
     private prismaService = new PrismaClient();
 
     async userFollowArtist(user_id, artist_id){
+        user_id = Number(user_id);
+        artist_id = Number(artist_id);
         let checkAlreadyFollower = await this.prismaService.followers.findFirst({
             where: {
                 user_id,
@@ -40,6 +42,8 @@ export class FollowersService {
     }
 
     async userUnfollowArtist(user_id, artist_id){
+        user_id = Number(user_id);
+        artist_id = Number(artist_id);
         let checkAlreadyFollower = await this.prismaService.followers.findFirst({
             where: {
                 user_id,
@@ -50,7 +54,7 @@ export class FollowersService {
         if(!checkAlreadyFollower)
             return false;
 
-        await this.prismaService.followers.delete({
+        let data = await this.prismaService.followers.delete({
             where: {
                 user_id_artist_id: {
                     user_id,
@@ -58,12 +62,20 @@ export class FollowersService {
                 }
             }
         });
+
+        if(data){
+            const key = `artist_${artist_id}_followers`;
+            await this.cacheManager.del(key); 
+        }
+        
+        return data;
     }
 
     async getArtistFollowersCount(artist_id){
         const key = `artist_${artist_id}_followers`;
         let cachedData = await this.cacheManager.get(key);
 
+        artist_id = Number(artist_id);
         if(cachedData){
             return cachedData;
         }

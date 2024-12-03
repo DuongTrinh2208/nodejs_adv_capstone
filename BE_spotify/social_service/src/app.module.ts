@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { FollowersModule } from './followers/followers.module';
 import { RedisModule } from './redis/redis.module';
+import { LikesModule } from './likes/likes.module';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { RedisModule } from './redis/redis.module';
     }),
     PrismaModule,
     FollowersModule,
-    RedisModule
+    RedisModule,
+    LikesModule
   ],
   controllers: [],
   providers: [],

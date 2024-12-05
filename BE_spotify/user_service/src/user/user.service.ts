@@ -1,8 +1,7 @@
-import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { access } from 'fs';
 
 @Injectable()
 export class UserService {
@@ -64,6 +63,31 @@ export class UserService {
         return {
             access_token: this.jwtService.sign(data)
         };
+    }
+
+    async createUser(email, input_password, name, date_of_birth){
+        let checkUserExist = await this.prismaService.users.findFirst({
+            where: {
+                email
+            }
+        });
+
+        if(checkUserExist){
+            throw new BadRequestException('Email already used');
+        }
+
+        let hashedPassword = await bcrypt.hash(input_password, 5);
+        date_of_birth = new Date(date_of_birth);
+        let data = await this.prismaService.users.create({
+            data: {
+                email,
+                password: hashedPassword,
+                name,
+                date_of_birth
+            }
+        });
+
+        return data != null;    
     }
 
     async decodeToken(token: string){

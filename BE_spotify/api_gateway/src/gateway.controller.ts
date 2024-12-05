@@ -42,6 +42,23 @@ export class GatewayController {
     return data;
   }
 
+  @Post('create-user')
+  async createUser(
+    @Body('email') email: string,
+    @Body('name') name: string,
+    @Body('password') password: string,
+    @Body('date_of_birth') date_of_birth: string
+  ) {
+    let data = await lastValueFrom(this.userService.send("CREATE_USER", {
+      email,
+      password,
+      name,
+      date_of_birth
+    }));
+
+    return data;
+  }
+
   @Post('add-artist')
   async addArtist(
     @Body('name') name: string,

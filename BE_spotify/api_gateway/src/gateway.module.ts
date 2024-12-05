@@ -12,7 +12,7 @@ import { ConfigModule } from '@nestjs/config';
       name: "USERS",
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://admin:1234@localhost:5672'],
+        urls: ['amqp://admin:1234@some-rabbit:5672'],
         queue: 'users_queue',
         queueOptions: {
           durable: false
@@ -23,7 +23,7 @@ import { ConfigModule } from '@nestjs/config';
       name: "MUSIC_CATALOGS",
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://admin:1234@localhost:5672'],
+        urls: ['amqp://admin:1234@some-rabbit:5672'],
         queue: 'music_catalog_queue',
         queueOptions: {
           durable: false
@@ -34,7 +34,7 @@ import { ConfigModule } from '@nestjs/config';
       name: "PLAY_LIST",
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://admin:1234@localhost:5672'],
+        urls: ['amqp://admin:1234@some-rabbit:5672'],
         queue: 'play_list_queue',
         queueOptions: {
           durable: false
@@ -45,7 +45,7 @@ import { ConfigModule } from '@nestjs/config';
       name: "SOCIAL",
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://admin:1234@localhost:5672'],
+        urls: ['amqp://admin:1234@some-rabbit:5672'],
         queue: 'social_queue',
         queueOptions: {
           durable: false

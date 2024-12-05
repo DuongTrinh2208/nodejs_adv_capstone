@@ -1,0 +1,761 @@
+{
+	"info": {
+		"_postman_id": "d13280b8-efe6-48c5-b193-f9b3e8beadf0",
+		"name": "Spotify",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32465260"
+	},
+	"item": [
+		{
+			"name": "Music Catalog",
+			"item": [
+				{
+					"name": "Artists",
+					"item": [
+						{
+							"name": "Find Artists",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/search-artists?name=michael",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"search-artists"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "michael"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "FIND_GENRE_ARTISTS",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/genre-artists?genre=Pop",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"genre-artists"
+									],
+									"query": [
+										{
+											"key": "genre",
+											"value": "Pop"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add artist",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"DuongTest4\",\n    \"genre\": \"Pop\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/add-artist",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"add-artist"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tracks",
+					"item": [
+						{
+							"name": "FIND_TRACKS_BY_ARTIST",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/find-tracks-by-artist?artist_id=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"find-tracks-by-artist"
+									],
+									"query": [
+										{
+											"key": "artist_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "FIND_TRACKS_IN_ALBUM",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/find-tracks-in-album?album_id=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"find-tracks-in-album"
+									],
+									"query": [
+										{
+											"key": "album_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADD_TRACKS",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"album_id\": 5,\n    \"artist_id\": 6,\n    \"tracks\": [\n        \n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/add-tracks",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"add-tracks"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Album",
+					"item": [
+						{
+							"name": "CREATE_ALBUM",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"artist_id\": 8,\n    \"name\": \"HEHEHE\",\n    \"release_date\": \"2024-12-25\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/create-album",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"create-album"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "FIND_ARTIST_ALBUM",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"artist_id\": 8,\n    \"name\": \"HUHUHU\",\n    \"release_date\": \"2024-12-25\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/find-artist-album?artist_id=8",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"find-artist-album"
+									],
+									"query": [
+										{
+											"key": "artist_id",
+											"value": "8"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Playlist",
+			"item": [
+				{
+					"name": "FIND_USER_PLAYLISTS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJkYXRlX29mX2JpcnRoIjoiMTk5MC0wNS0xNVQwMDowMDowMC4wMDBaIiwicHJvZmlsZV9pbWFnZSI6bnVsbCwiaWF0IjoxNzMzNDA5OTI5LCJleHAiOjE3MzM0MTM1Mjl9.ymq9nKEsJ4d8rztKMAdlWsPFjIA63hZePpzPd2W8YDk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/get-user-playlist",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"get-user-playlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE_PLAYLIST",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJkYXRlX29mX2JpcnRoIjoiMTk5MC0wNS0xNVQwMDowMDowMC4wMDBaIiwicHJvZmlsZV9pbWFnZSI6bnVsbCwiaWF0IjoxNzMyMjA1ODY3LCJleHAiOjE3MzIyMDk0Njd9.Y2KZnwNrWk95Y3FC4F5ktuWaGvzVwBFQ5PrBhrK6_ac",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Playlist\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/create-playlist",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"create-playlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD_TRACKS_TO_PLAYLIST",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJkYXRlX29mX2JpcnRoIjoiMTk5MC0wNS0xNVQwMDowMDowMC4wMDBaIiwicHJvZmlsZV9pbWFnZSI6bnVsbCwiaWF0IjoxNzMyMjA1ODY3LCJleHAiOjE3MzIyMDk0Njd9.Y2KZnwNrWk95Y3FC4F5ktuWaGvzVwBFQ5PrBhrK6_ac",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playlist_id\": 4,\n    \"trackIds\": [4, 5, 6, 7]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/add-tracks-to-playlist",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"add-tracks-to-playlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REMOVE_TRACKS_FROM_PLAYLIST",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJkYXRlX29mX2JpcnRoIjoiMTk5MC0wNS0xNVQwMDowMDowMC4wMDBaIiwicHJvZmlsZV9pbWFnZSI6bnVsbCwiaWF0IjoxNzMyMjA1ODY3LCJleHAiOjE3MzIyMDk0Njd9.Y2KZnwNrWk95Y3FC4F5ktuWaGvzVwBFQ5PrBhrK6_ac",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playlist_id\": 4,\n    \"trackIds\": [4]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/remove-tracks-from-playlist",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"remove-tracks-from-playlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET_TRACKS_IN_PLAYLIST",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/get-tracks-from-playlist?playlist_id=4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"get-tracks-from-playlist"
+							],
+							"query": [
+								{
+									"key": "playlist_id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Social",
+			"item": [
+				{
+					"name": "Follower",
+					"item": [
+						{
+							"name": "USER_FOLLOW_ARTIST",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJkYXRlX29mX2JpcnRoIjoiMTk5MC0wNS0xNVQwMDowMDowMC4wMDBaIiwicHJvZmlsZV9pbWFnZSI6bnVsbCwiaWF0IjoxNzMzMjQwMjE1LCJleHAiOjE3MzMyNDM4MTV9.KqeF9shOhuBgqYG41UlhEH-SkdVluHy6uie0qvA4T0E",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"artist_id\": \"9\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/follow-artist",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"follow-artist"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER_UNFOLLOW_ARTIST",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJkYXRlX29mX2JpcnRoIjoiMTk5MC0wNS0xNVQwMDowMDowMC4wMDBaIiwicHJvZmlsZV9pbWFnZSI6bnVsbCwiaWF0IjoxNzMzMjQwMjE1LCJleHAiOjE3MzMyNDM4MTV9.KqeF9shOhuBgqYG41UlhEH-SkdVluHy6uie0qvA4T0E",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"artist_id\": \"9\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/unfollow-artist",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"unfollow-artist"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_ARTISTS_FOLLOWER_COUNT",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/artist-follower?artist_id=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"artist-follower"
+									],
+									"query": [
+										{
+											"key": "artist_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Likes",
+					"item": [
+						{
+							"name": "USER_LIKE_TRACK",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJkYXRlX29mX2JpcnRoIjoiMTk5MC0wNS0xNVQwMDowMDowMC4wMDBaIiwicHJvZmlsZV9pbWFnZSI6bnVsbCwiaWF0IjoxNzMzMjQxMDY5LCJleHAiOjE3MzMyNDQ2Njl9.YuojRwlNoQnLsszIsYOiiYb7oFxpr1zAB7jhII70GGQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"track_id\": \"7\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/like-track",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"like-track"
+									],
+									"query": [
+										{
+											"key": "artist_id",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER_UNLIKE_TRACK",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJkYXRlX29mX2JpcnRoIjoiMTk5MC0wNS0xNVQwMDowMDowMC4wMDBaIiwicHJvZmlsZV9pbWFnZSI6bnVsbCwiaWF0IjoxNzMzMjQxMDY5LCJleHAiOjE3MzMyNDQ2Njl9.YuojRwlNoQnLsszIsYOiiYb7oFxpr1zAB7jhII70GGQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"track_id\": \"5\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/unlike-track",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"unlike-track"
+									],
+									"query": [
+										{
+											"key": "artist_id",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_USER_LIKED_TRACKS",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJkYXRlX29mX2JpcnRoIjoiMTk5MC0wNS0xNVQwMDowMDowMC4wMDBaIiwicHJvZmlsZV9pbWFnZSI6bnVsbCwiaWF0IjoxNzMzMjQxMDY5LCJleHAiOjE3MzMyNDQ2Njl9.YuojRwlNoQnLsszIsYOiiYb7oFxpr1zAB7jhII70GGQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/liked-tracks",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"liked-tracks"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"johndoe@example.com\",\n    \"password\": \"johndoe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/user-login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user-login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJkYXRlX29mX2JpcnRoIjoiMTk5MC0wNS0xNVQwMDowMDowMC4wMDBaIiwicHJvZmlsZV9pbWFnZSI6bnVsbCwiaWF0IjoxNzMxMjM1ODYyLCJleHAiOjE3MzEyMzk0NjJ9.HHQjNt57RUKy5kHibVhQfyrLzOIIlX38yyd5_ELnnMk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"johndoe@example.com\",\n    \"current_password\": \"password123\",\n    \"new_password\": \"johndoe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/change-password",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@admin\",\n    \"name\": \"admin\",\n    \"password\": \"admin\",\n    \"date_of_birth\": \"1999-11-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/create-user",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"create-user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
